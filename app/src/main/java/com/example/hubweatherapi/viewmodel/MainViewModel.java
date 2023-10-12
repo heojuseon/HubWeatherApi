@@ -30,6 +30,7 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<String> result_Max_temp = new MutableLiveData<>("");
     public MutableLiveData<String> result_Min_temp = new MutableLiveData<>("");
     public MutableLiveData<String> result_time = new MutableLiveData<>("");
+    public MutableLiveData<String> result_sky = new MutableLiveData<>("");
 
 
     public void init() {
@@ -43,7 +44,8 @@ public class MainViewModel extends ViewModel {
                     String temp = "";        // 기온
                     String max_temp = "";   //최고 기온
                     String min_temp = "";   //최저 기온
-                    String r_time="";
+                    String r_time="";       //현재 시간
+                    String sky = "";    //현재 날씨
 
                     for (int i = 0; i < 10; i++) {
                         String category = it.get(i).getCategory();
@@ -52,6 +54,17 @@ public class MainViewModel extends ViewModel {
                         if (category.equals("TMP")) {
                             temp = fcstValue;
                             r_time = fcstTime;
+                        } else if (category.equals("SKY")) {
+                            switch (fcstValue){
+                                case "1":sky = "맑음";
+                                    break;
+                                case "3":sky = "구름많음";
+                                    break;
+                                case "4":sky = "흐림";
+                                    break;
+                                default:
+                                    sky="오류";
+                            }
                         } else {
                             continue;
                         }
@@ -74,6 +87,7 @@ public class MainViewModel extends ViewModel {
                     result_Max_temp.setValue("최고온도: " + max_temp);
                     result_Min_temp.setValue("최저온도: " + min_temp);
                     result_time.setValue("예보시간: " + r_time);
+                    result_sky.setValue("현재날씨: " + sky);
 
 
                     Log.d("MainActivity", "Api Connect Success");
